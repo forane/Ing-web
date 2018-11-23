@@ -1,0 +1,39 @@
+﻿<?php session_start();
+
+if (isset($_SESSION['correo'])) {
+  header('Location: index.php');
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') { // si el metodo de envio es igual a POST
+  $nombre = filter_var(strtolower($_POST['nombre']), FILTER_SANITIZE_STRING);//pasar de mayusculas a minuscular y no dejar que escriban codigo dentro
+
+$contraseña = $_POST['contraseña'];
+  $correo = $_POST['correo'];
+    $ciudad = $_POST['ciudad'];
+
+ //echo "$nombre .   $correo . $ciudad. $contrasena";
+
+  $errores='';
+
+  if (empty($nombre) or empty($correo) or empty($contrasena) or empty($ciudad) {
+    	$errores .= '<li>Por favor rellena todos los datos correctamente</li>';
+  }else {
+    try {
+      $conexion = new PDO('mysql:host=192.168.1.1;dbname=tips_f, 'tipsf', 'Buap.2018');
+      if($conexion){
+
+        echo "si hay conexion";
+      }
+    } catch (PDOException $e) {
+      echo "Error: " . $e->getMessage();
+    }
+    
+  if ($errores =='') {
+    $query = "INSERT INTO usuarios(nombre,contrasena,correo,ciudad) VALUES('$nombre','$contrasena','$correo',$ciudad','1')";
+    $resultado=$conexion -> query($query);
+    print_r($query);
+  }
+//header('Location: login.php');
+}
+ require 'views/registrate.view.php';
+?>
